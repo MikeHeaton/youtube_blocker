@@ -8,13 +8,13 @@
       "32": "images/lotus_32.png",
       "128": "images/lotus_128.png"
     },
-    "permissions": ["declarativeContent", "storage", "activeTab"],
+    "permissions": ["declarativeContent", "storage", "activeTab", "identity"],
     "content_scripts": [{
       "matches": ["*://*.youtube.com/*"],
       "js": ["utils.js", "content.js"]
     }],
     "background": {
-      "scripts": ["storage.js", "utils.js", "background.js"],
+      "page": "background.html",
       "persistent": false
     },
     "options_page": "options.html",
@@ -25,5 +25,6 @@
         "32": "images/lotus_32.png",
         "128": "images/lotus_128.png"
       }
-    }
+    },
+    "content_security_policy": "script-src 'self' https://apis.google.com; object-src 'self'"
   }
