@@ -1,6 +1,8 @@
-// TODO: Handle api key properly
-const YOUTUBE_API_KEY = "AIzaSyCOhzDOryzhD1wFdDVLr19DNW5F0Q5HK44"
-
+/**
+ * Call the Youtube API to discover the channel ID from a video ID.
+ * Returns a Promise.
+ * @param {str} videoId 
+ */
 async function getChannelFromVideoPromise(videoId) {
 	let url = new URL('https://www.googleapis.com/youtube/v3/videos')
 	url.search = new URLSearchParams({
@@ -19,7 +21,3 @@ async function getChannelFromVideoPromise(videoId) {
 			return result.items[0].snippet.channelId }
 	)
 }
-
-getChannelFromVideoPromise("SRYtn0j5ccA").then( 
-	(result) => { console.log(result) }
-)

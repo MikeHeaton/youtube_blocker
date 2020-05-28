@@ -1,9 +1,11 @@
-function getBlockDecision(id, videoBlockList) {
-    console.log("video ID:" + id);
+function getBlockDecision(videoId, channelId, videoBlockList, channelBlockList) {
+    console.log("video ID:", id, ", channel ID: ", channelId);
 
     console.log("Video block list:", videoBlockList)
 
-    if (videoBlockList.has(id)) {
+    console.log("Channel block list:", channelBlockList)
+
+    if (videoBlockList.has(videoId) || channelBlockList.has(channelId)) {
         return true;
     } else {
         return false;
@@ -29,28 +31,36 @@ chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         const videoId = request.videoId
 
-        getLatestBlockListPromise().then( function (videoBlockList) {
-            const shouldBlock = getBlockDecision(videoId, videoBlockList)
+        const channelIdPromise = getChannelFromVideoPromise(videoId)
+
+        const videoBlockListPromise = getVideoBlockListPromise()
+        const channelBlockListPromise = getChannelBlockListPromise()
+
+        Promise.all([channelIdPromise, videoBlockListPromise, channelBlockListPromise]).then(
+            (values) => {
+                const channelId = values[0]
+                const videoBlockList = values[1]
+                const channelBlockList = values[2]
+
+                const shouldBlock = getBlockDecision(
+                    videoId, channelId, videoBlockList, channelBlockList
+                )
         
-            const response = {
-                videoId: videoId,
-                shouldBlock: shouldBlock
+                const response = {
+                    videoId: videoId,
+                    shouldBlock: shouldBlock
+                }
+
+                console.log("Sending response: ", response)
+
+                sendResponse({
+                    complete: true,
+                    videoId: videoId,
+                    shouldBlock: shouldBlock
+                })
             }
+        )
 
-            console.log("Sending response: ", response)
-
-            sendResponse({
-                complete: true,
-                videoId: videoId,
-                shouldBlock: shouldBlock
-            })
-        })
-        
         return true;
     }
 );
-
-
-// Demo data
-appendBlockList('foo')
-appendBlockList('bar')

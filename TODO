@@ -1,7 +1,18 @@
 * Add a default popup for non-youtube websites
 * Make popups prettier
 
-NEXT STEPS
-* Block by channel
-* Remove things from blocklist
-* Options page?
+IMMEDIATE NEXT STEPS
+* Add blocklist for channels
+* Add block button for channel
+* Add separate reset buttons to Options page
+* Block a channel's page from the channel homepage
+
+BUGS
+* Doesn't seem to block when clicking onto a video from the homepage?
+
+
+ROADMAP
+* Remove videos and channels from recommendations????
+* Remove recommendations altogether?
+* Uglify the site
+* Loading delays
